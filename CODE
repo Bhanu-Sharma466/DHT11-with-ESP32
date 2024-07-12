@@ -1,0 +1,38 @@
+#include <DHT.h>
+#include "thingProperties.h"
+#include <WiFi.h>
+#include <WiFiClient.h> // Include WiFiClient library
+
+#define DHTPIN 14
+#define DHTTYPE DHT11
+
+DHT dht(DHTPIN, DHTTYPE);
+
+
+void setup() {
+Serial.begin(9600);
+delay(1500);
+
+initProperties();
+ArduinoCloud.begin(ArduinoIoTPreferredConnection);
+setDebugMessageLevel(2);
+ArduinoCloud.printDebugInfo();
+
+dht.begin();
+analogReadResolution(12);
+
+
+}
+
+void loop() {
+ArduinoCloud.update();
+
+float temp = dht.readTemperature();
+float hum = dht.readHumidity();
+
+current_Temperature = temp;
+current_Humidity = hum;
+
+
+
+}
